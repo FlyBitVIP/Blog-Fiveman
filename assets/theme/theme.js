@@ -17,6 +17,26 @@
       /* 忽略存储限制。 */
     }
   });
+  // 文章使用独立滚动容器，不能滚动 window；按钮仅在正文下滑后出现。
+  const articleScroll = document.querySelector(".article-scroll");
+  const backToTop = document.getElementById("back-to-top");
+  if (articleScroll && backToTop) {
+    const updateBackToTop = () => {
+      backToTop.hidden = articleScroll.scrollTop < 320;
+    };
+    articleScroll.addEventListener("scroll", updateBackToTop, { passive: true });
+    window.addEventListener("resize", updateBackToTop);
+    window.addEventListener("pageshow", updateBackToTop);
+    backToTop.addEventListener("click", () => {
+      // 遵循系统减少动态效果的偏好，并将键盘焦点交回正文。
+      articleScroll.scrollTo({
+        top: 0,
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      });
+      document.getElementById("main")?.focus({ preventScroll: true });
+    });
+    updateBackToTop();
+  }
   document.querySelectorAll(".prose pre").forEach((block) => {
     const button = document.createElement("button");
     button.className = "code-copy";
@@ -34,51 +54,4 @@
     });
     block.append(button);
   });
-  const node = document.getElementById("blog-comments-config");
-  if (!node) return;
-  const config = JSON.parse(node.textContent || "{}");
-  if (config.comments && window.Artalk) {
-    try {
-      Artalk.init({
-        el: "#comments",
-        server: config.server,
-        site: config.site,
-        pageKey: config.pageKey,
-        pageTitle: config.pageTitle,
-        locale: config.locale,
-        pvAdd: false,
-        pvEl: "",
-        emoticons: false,
-        darkMode: root.classList.contains("dark"),
-      });
-    } catch {
-      document.getElementById("comments").textContent = "评论服务暂时不可用，请稍后重试。";
-    }
-  }
-  // 两个开关彼此独立，评论组件不负责增加浏览量，避免重复计数。
-  if (config.views) {
-    fetch(config.server.replace(/\/$/, "") + "/api/v2/pages/pv", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        page_key: config.pageKey,
-        page_title: config.pageTitle,
-        site_name: config.site,
-      }),
-      credentials: "omit",
-      signal: AbortSignal.timeout(10000),
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("统计服务不可用");
-        return response.json();
-      })
-      .then((data) => {
-        const counter = document.getElementById("page-views");
-        if (counter && Number.isFinite(data.pv))
-          counter.textContent = data.pv.toLocaleString("zh-CN");
-      })
-      .catch(() => {
-        /* 统计失败保持占位符，不能阻断正文阅读。 */
-      });
-  }
 })();
