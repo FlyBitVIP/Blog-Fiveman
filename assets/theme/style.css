@@ -195,6 +195,30 @@ img {
   color: var(--accent);
   border-color: var(--accent);
 }
+.menu-toggle {
+  display: none;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+}
+.menu-toggle:hover,
+.menu-toggle[aria-expanded="true"] {
+  color: var(--accent);
+  background: var(--soft);
+}
+.menu-icon-close,
+.menu-toggle[aria-expanded="true"] .menu-icon-open {
+  display: none;
+}
+.menu-toggle[aria-expanded="true"] .menu-icon-close {
+  display: block;
+}
 .theme-icon-sun,
 .dark .theme-icon-moon {
   display: none;
@@ -642,7 +666,7 @@ img {
   border-radius: 10px;
   color: var(--accent);
   background: var(--surface);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--text) 8%, transparent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition:
     background 0.18s ease,
     border-color 0.18s ease;
@@ -658,6 +682,7 @@ img {
 .article-page > .site-footer {
   background: var(--bg);
   z-index: 2;
+  max-height: 30vh;
   max-height: 30dvh;
   overflow: auto;
 }
@@ -971,6 +996,7 @@ img {
     bottom: max(16px, env(safe-area-inset-bottom));
   }
   .header-inner {
+    position: relative;
     min-height: 68px;
     padding: 14px 22px;
     gap: 16px;
@@ -978,13 +1004,71 @@ img {
   }
   .brand {
     flex: 1;
+    min-width: 0;
     font-size: 20px;
+  }
+  .brand span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .brand img {
+    flex-shrink: 0;
   }
   .header-inner > nav {
     order: 3;
     flex-basis: 100%;
     justify-content: flex-start;
     gap: 8px 22px;
+  }
+  /* 浮层不挤压正文；文章页的固定页头也允许导航在其下方展开。 */
+  .site-header,
+  .article-page > .site-header {
+    z-index: 4;
+    overflow: visible;
+    max-height: none;
+  }
+  .navigation-ready {
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+  .navigation-ready > .menu-toggle {
+    display: grid;
+  }
+  .navigation-ready > nav {
+    display: none;
+    position: absolute;
+    top: calc(100% - 4px);
+    left: 22px;
+    right: 22px;
+    max-height: 60vh;
+    max-height: min(60dvh, 420px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+  }
+  .navigation-ready > nav.is-open {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 2px;
+  }
+  .navigation-ready > nav a {
+    flex-shrink: 0;
+    padding: 9px 12px;
+    border-radius: 6px;
+    overflow-wrap: anywhere;
+  }
+  .navigation-ready > nav a:hover,
+  .navigation-ready > nav a[aria-current] {
+    color: var(--accent);
+    background: var(--soft);
+  }
+  .navigation-ready > nav a[aria-current]::after {
+    display: none;
   }
   .shell,
   .home-shell {

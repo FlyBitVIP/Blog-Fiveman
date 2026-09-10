@@ -39,15 +39,6 @@
   --pf-error-text-secondary: var(--muted);
   min-width: 0;
 }
-.search-header {
-  margin-bottom: 28px;
-}
-.search-header h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-  line-height: 1.4;
-}
-.search-header p,
 .search-status {
   margin: 8px 0 20px;
   color: var(--muted);
@@ -57,6 +48,12 @@
 }
 .site-search pagefind-summary {
   margin: 14px 0;
+}
+.site-search .reader-dialog-body {
+  min-height: 150px;
+}
+.site-search .empty {
+  padding: 24px 12px;
 }
 @media (max-width: 760px) {
   .search-toggle {
