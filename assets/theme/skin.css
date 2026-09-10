@@ -1,29 +1,29 @@
-/* 旧书纸：米色纸张、棕色油墨与双线书页边框，使用本地衬线字体。 */
+/* 旧书纸：刊物目录、叠页投影、书脊与页边注释。纸纹用渐变绘制，无外部纹理依赖。 */
 :root {
-  --bg: #ede5d5;
+  --bg: #eae2d1;
   --surface: #fbf5e8;
-  --text: #4e4033;
-  --muted: #88735c;
-  --line: #d4c5ae;
-  --accent: #916137;
+  --text: #51412f;
+  --muted: #806d56;
+  --line: #d0bfa4;
+  --accent: #8d5435;
   --soft: #f0e4ce;
-  --code: #efe5d4;
-  --scrollbar: #b9a68c;
+  --code: #efe4d1;
+  --scrollbar: #b4a087;
   --radius: 2px;
-  --paper-grain: rgba(120, 89, 53, 0.045);
+  --paper-grain: rgba(126, 93, 52, 0.045);
   font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
 }
 :root.dark {
-  --bg: #211e19;
-  --surface: #2c2720;
+  --bg: #211d18;
+  --surface: #2c261e;
   --text: #eadfc9;
-  --muted: #b6a88e;
-  --line: #4a4031;
-  --accent: #ddba85;
-  --soft: #393021;
-  --code: #251f18;
-  --scrollbar: #6e5e46;
-  --paper-grain: rgba(215, 187, 135, 0.025);
+  --muted: #b9a98c;
+  --line: #51442f;
+  --accent: #e0b982;
+  --soft: #39301f;
+  --code: #241f17;
+  --scrollbar: #736145;
+  --paper-grain: rgba(216, 183, 133, 0.03);
 }
 body {
   background-image: repeating-linear-gradient(
@@ -35,48 +35,89 @@ body {
   );
 }
 .site-header {
-  background-color: var(--surface);
+  background: var(--surface);
   border-bottom: 4px double var(--line);
 }
 .header-inner {
-  min-height: 94px;
+  min-height: 90px;
 }
 .brand {
-  font-size: 26px;
+  font-size: 27px;
   font-weight: 600;
-  letter-spacing: 2px;
-}
-.brand::before {
-  content: "";
-  width: 20px;
-  height: 26px;
-  border: 1px solid var(--accent);
-  border-left: 4px double var(--accent);
-  border-radius: 0 3px 3px 0;
+  letter-spacing: 3px;
 }
 .home-shell {
-  gap: 36px;
+  gap: 40px;
 }
 .content-column {
   background: var(--surface);
-  padding: 12px 32px 28px;
+  padding: 26px 36px 32px;
   border: 1px solid var(--line);
   box-shadow:
     5px 5px 0 -1px var(--surface),
     5px 5px 0 var(--line),
+    9px 9px 0 -1px var(--surface),
+    9px 9px 0 var(--line),
     var(--shadow);
 }
-.content-column > .site-banners {
-  margin-top: 20px;
+.theme-list-heading {
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0 0 20px;
+  margin-bottom: 0;
+  border-bottom: 4px double var(--line);
+}
+.theme-list-title {
+  flex-basis: 100%;
+  text-align: center;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 10px;
+  padding-left: 10px;
+}
+.theme-list-count {
+  margin-left: 0;
+  font-size: 11px;
+  letter-spacing: 2px;
 }
 .article-card,
 .article-card:first-child {
-  padding: 28px 0;
+  position: relative;
+  padding: 28px 0 28px 40px;
   border-bottom: 1px dashed var(--line);
 }
+.article-card:last-child {
+  border-bottom: 0;
+}
+.article-card .card-index {
+  display: block;
+  position: absolute;
+  top: 32px;
+  left: 0;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--accent);
+}
 .article-card h2 {
-  font-size: 27px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 25px;
   font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.article-card h2::after {
+  content: "";
+  min-width: 30px;
+  flex: 1;
+  border-bottom: 1px dotted var(--line);
+}
+.pinned {
+  margin-left: 3px;
+  border-radius: 0;
+  font-weight: 400;
 }
 .card-summary {
   font-size: 16px;
@@ -86,47 +127,95 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .home-sidebar {
-  padding: 22px;
+  padding: 24px;
   border: 4px double var(--line);
   background: var(--surface);
 }
 .sidebar-section h2 {
   font-size: 17px;
-  letter-spacing: 3px;
+  letter-spacing: 5px;
   font-weight: 500;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
 }
 .sidebar-section + .sidebar-section {
   border-top-style: dashed;
 }
-.tag-list a,
-.pinned,
-.chips a {
-  border-radius: 0;
+.category-list a {
+  border-bottom: 1px dotted var(--line);
+}
+.category-list a:last-child {
+  border-bottom: 0;
 }
 .article-shell > article {
-  padding: 36px;
+  position: relative;
+  padding: 38px 40px;
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow:
+    inset 8px 0 0 var(--soft),
     5px 0 0 -1px var(--surface),
     6px 0 0 var(--line);
 }
 .article-header {
+  text-align: center;
   border-bottom: 4px double var(--line);
+  padding-bottom: 32px;
+}
+.article-header .eyebrow {
+  letter-spacing: 5px;
+  font-weight: 400;
 }
 .article-header h1 {
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+}
+.article-header .metadata,
+.article-header .chips {
+  justify-content: center;
 }
 .prose {
   font-size: 17px;
-  line-height: 2.05;
+  line-height: 2.1;
+}
+.prose h2 {
+  font-size: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
 }
 .prose blockquote {
+  margin-left: 12px;
+  margin-right: 12px;
+  padding: 12px 22px;
+  border-left: 3px double var(--accent);
   background: var(--soft);
+}
+.prose hr {
+  width: 110px;
+  border-top: 4px double var(--line);
+  margin: 40px auto;
+}
+.prose img {
+  border: 7px solid var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    3px 3px 0 var(--soft);
 }
 .toc {
   border-left-style: dashed;
+}
+.toc > div {
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+.chips a {
+  border-radius: 0;
+}
+.site-banners {
+  border: 4px double var(--line);
+  border-radius: 0;
+  box-shadow: none;
 }
 .site-footer {
   border-top: 4px double var(--line);
@@ -138,24 +227,49 @@ body {
 .search-toggle {
   border-radius: 2px;
 }
+.reader-dialog .reader-dialog-header {
+  background: var(--surface);
+  border-bottom: 4px double var(--line);
+}
+.reader-dialog .reader-dialog-header h2 {
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .article-card:hover {
+    transform: translateX(3px);
+  }
+}
 @media (max-width: 760px) {
   .header-inner {
     min-height: 74px;
   }
   .brand {
     font-size: 22px;
+    letter-spacing: 2px;
   }
   .shell {
     padding: 24px 18px 36px;
   }
   .content-column {
-    padding: 0 20px 24px;
+    padding: 24px 20px;
+  }
+  .theme-list-title {
+    font-size: 22px;
+  }
+  .article-card,
+  .article-card:first-child {
+    padding: 24px 0 24px 30px;
+  }
+  .article-card .card-index {
+    top: 29px;
+    font-size: 13px;
   }
   .article-card h2 {
     font-size: 23px;
   }
   .article-shell > article {
-    padding: 24px 20px;
+    padding: 26px 22px;
   }
   .card-summary,
   .prose {

@@ -219,13 +219,6 @@ img {
 .menu-toggle[aria-expanded="true"] .menu-icon-close {
   display: block;
 }
-.theme-icon-sun,
-.dark .theme-icon-moon {
-  display: none;
-}
-.dark .theme-icon-sun {
-  display: block;
-}
 
 /* 内容不足一屏时由主区域自然伸展，页脚始终贴近底部。 */
 .shell {
@@ -402,6 +395,9 @@ img {
 .article-card {
   padding: 28px 0;
   border-bottom: 1px solid var(--line);
+}
+.card-index {
+  display: none;
 }
 .article-card:first-child {
   padding-top: 0;

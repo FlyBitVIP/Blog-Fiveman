@@ -1,23 +1,28 @@
 /* 主题交互与 Artalk 接入不依赖外部字体或公共脚本 CDN。 */
 (() => {
   const root = document.documentElement;
-  const picker = document.getElementById("theme-mode");
+  const toggle = document.getElementById("theme-mode");
+  const status = document.getElementById("theme-mode-status");
   const system = matchMedia("(prefers-color-scheme: dark)");
-  const validMode = (value) => (["system", "light", "dark"].includes(value) ? value : "system");
+  const modes = ["system", "light", "dark"];
+  const labels = { system: "跟随系统", light: "明亮", dark: "暗黑" };
+  const validMode = (value) => (modes.includes(value) ? value : "system");
   let mode = validMode(root.dataset.colorMode);
   const applyMode = () => {
     root.dataset.colorMode = mode;
     root.classList.toggle("dark", mode === "dark" || (mode === "system" && system.matches));
-    if (picker) {
-      picker.value = mode;
-      picker.title = `明暗模式：${{ system: "跟随系统", light: "明亮", dark: "暗黑" }[mode]}`;
-      picker.parentElement.title = picker.title;
+    if (toggle) {
+      const next = modes[(modes.indexOf(mode) + 1) % modes.length];
+      toggle.title = `${labels[mode]} · 点击切换为${labels[next]}`;
+      toggle.setAttribute("aria-label", `明暗模式：${labels[mode]}，点击切换为${labels[next]}`);
     }
   };
   applyMode();
-  picker?.addEventListener("change", () => {
-    mode = validMode(picker.value);
+  // 原生按钮同时支持鼠标、触屏、回车及空格；单击按三种模式循环。
+  toggle?.addEventListener("click", () => {
+    mode = modes[(modes.indexOf(mode) + 1) % modes.length];
     applyMode();
+    if (status) status.textContent = `已切换为${labels[mode]}`;
     try {
       localStorage.setItem("reader-theme", mode);
     } catch {

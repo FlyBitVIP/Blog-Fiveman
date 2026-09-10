@@ -32,7 +32,47 @@ body {
     transform 0.25s ease;
 }
 .article-card {
+  counter-increment: entry;
   animation: reader-enter 0.5s ease backwards;
+}
+.article-list {
+  counter-reset: entry;
+}
+/* 局部模板只提供主题化的栏目标题，文章标题与正文保持可抓取的原始结构。 */
+.theme-list-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  margin-bottom: 24px;
+  color: var(--accent);
+}
+.theme-list-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.theme-list-count {
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.card-index::before {
+  content: counter(entry, decimal-leading-zero);
+}
+.prose h2:target,
+.prose h3:target {
+  color: var(--accent);
+}
+.prose img {
+  border-radius: var(--radius);
+}
+.reader-dialog .reader-dialog-header {
+  background: var(--soft);
 }
 .article-card:nth-child(2) {
   animation-delay: 0.04s;
